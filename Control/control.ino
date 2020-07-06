@@ -1,23 +1,40 @@
-int counter = 0;
+int airValue = 600;
+int waterValue = 230;
+
+int soilMoistureAnalogReading = 0;
+int soilMoisturePercentage = 0;
+
+bool pumpOn = false;
+int moistureSensor = A2;
+int waterRelay = 9;
 
 void setup() {
-  // LED_BUILDIN is an alias to pin 13 on the Arduino Uno.
-  pinMode(LED_BUILTIN, OUTPUT);
   Serial.begin(57600);
+  
+  pinMode(moistureSensor, INPUT);
+  pinMode(waterRelay, OUTPUT);
+
+  // Ensure pump is switched off on startup
+  analogWrite(waterRelay, 255);
 }
 
 void loop() {
-  if (counter == 5) {
-    counter = 0;
-  } else {
-    ++counter;
+  soilMoistureAnalogReading = analogRead(moistureSensor);
+  soilMoisturePercentage = map(soilMoistureAnalogReading, airValue, waterValue, 0, 100);
+  Serial.println(soilMoistureAnalogReading);
+  Serial.print(soilMoisturePercentage);
+  Serial.println("% moisture\n");
+
+  if (soilMoisturePercentage < 30) {
+    togglePump(true);
+  } else if (soilMoisturePercentage > 90) {
+    togglePump(false);
   }
-  Serial.print("TEST");
-  Serial.println(counter);
+  
   delay(500);
-//  digitalWrite(LED_BUILTIN, HIGH);
-//  delay(1000);
-//
-//  digitalWrite(LED_BUILTIN, LOW);
-//  delay(1000);
+}
+
+void togglePump(bool on) {
+  int analogValue = on ? 0 : 255;
+  analogWrite(waterRelay, analogValue);
 }
