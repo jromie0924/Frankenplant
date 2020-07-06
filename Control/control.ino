@@ -3,7 +3,7 @@ const int WET_VALUE = 220;
 const int PUMP_TIMER = 2000;
 const int PAUSE_TIME = 3000;
 const int BAUD = 9600;
-const int WATERING_THRESHOLD = 100;
+const int WATERING_THRESHOLD = 95;
 const int MONITORING_THRESHOLD = 30;
 
 int soilMoistureAnalogReading = 0;
@@ -11,7 +11,6 @@ int soilMoisturePercentage = 0;
 int dryReading = 0;
 
 int moistureSensor = A2;
-
 int waterRelay = 9;
 
 void setup() {
