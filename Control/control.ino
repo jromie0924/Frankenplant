@@ -4,7 +4,7 @@ const int PUMP_TIMER = 2000;
 const int PAUSE_TIME = 3000;
 const int BAUD = 9600;
 const int WATERING_THRESHOLD = 95;
-const int MONITORING_THRESHOLD = 30;
+const int MONITORING_THRESHOLD = 50;
 
 int soilMoistureAnalogReading = 0;
 int soilMoisturePercentage = 0;
@@ -57,7 +57,7 @@ bool checkMoisture(bool isWatering) {
   if (soilMoisturePercentage != previousPercentage) {
     sendSerialMessage(0, false);
   }
-  return soilMoisturePercentage < comparator;
+  return soilMoisturePercentage <= comparator;
 }
 
 void togglePump(bool on) {
